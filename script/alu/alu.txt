@@ -1,0 +1,454 @@
+; 
+; CODE MEMORY: (0x00000000-0x0000FFFF)
+; DATA MEMORY: (0x00010000-0x0001FFFF)
+; 
+
+org 0000
+
+_reset:
+
+	xor r0,  r0
+	xor r1,  r1
+	xor r2,  r2
+	xor r3,  r3
+	xor r4,  r4
+	xor r5,  r5
+	xor r6,  r6
+	xor r7,  r7
+	xor r8,  r8
+	xor r9,  r9
+	xor r10, r10
+	xor r11, r11
+	xor r12, r12
+	xor r13, r13
+	xor r14, r14
+	xor r15, r15
+	
+main:
+	
+  
+  mov #23418, r4
+  mov #-12197, r6
+  
+  call #EXEC1
+	
+  
+  mov #1024, r4
+  mov #-4097, r6
+  
+  call #EXEC1
+	
+  
+  mov #-338, r4
+  mov #-17248, r6
+  
+  call #EXEC1
+	
+  
+  mov #3840, r4
+  mov #3328, r6
+  
+  call #EXEC1
+	
+  
+  mov #28673, r4
+  mov #27649, r6
+  
+  call #EXEC1
+	
+  
+  mov #-28635, r4
+  mov #-28649, r6
+  
+  call #EXEC1
+	
+  
+  mov #-31841, r4
+  mov #905, r6
+  
+  call #EXEC1
+	
+  
+  mov #-27128, r4
+  mov #22996, r6
+  
+  call #EXEC1
+	
+  
+  mov #-14849, r4
+  mov #8217, r6
+  
+  call #EXEC1
+	
+  
+  mov #-8210, r4
+  mov #0, r6
+  
+  call #EXEC1
+	
+  
+  mov #4366, r4
+  mov #-5118, r6
+  
+  call #EXEC1
+	
+  
+  mov #11072, r4
+  mov #25042, r6
+  
+  call #EXEC1
+	
+  
+  mov #27136, r4
+  mov #10891, r6
+  
+  call #EXEC1
+	
+  
+  mov #-22545, r4
+  mov #18619, r6
+  
+  call #EXEC1
+	
+  
+  mov #7200, r4
+  mov #26821, r6
+  
+  call #EXEC1
+	
+  
+  mov #4096, r4
+  mov #4096, r6
+  
+  call #EXEC1
+	
+  
+  mov #27904, r4
+  mov #8320, r6
+  
+  call #EXEC1
+	
+  
+  mov #20843, r4
+  mov #-24086, r6
+  
+  call #EXEC1
+	
+  
+  mov #-1, r4
+  mov #28153, r6
+  
+  call #EXEC1
+	
+  
+  mov #21564, r4
+  mov #-27201, r6
+  
+  call #EXEC1
+	
+  
+  mov #-896, r4
+  mov #1152, r6
+  
+  call #EXEC1
+	
+  
+  mov #-10976, r4
+  mov #759, r6
+  
+  call #EXEC1
+	
+  
+  mov #-16864, r4
+  mov #289, r6
+  
+  call #EXEC1
+	
+  
+  mov #24950, r4
+  mov #2056, r6
+  
+  call #EXEC1
+	
+  
+  mov #21762, r4
+  mov #-23844, r6
+  
+  call #EXEC1
+	
+  
+  mov #18399, r4
+  mov #16448, r6
+  
+  call #EXEC1
+	
+  
+  mov #3591, r4
+  mov #28407, r6
+  
+  call #EXEC1
+	
+  
+  mov #-7295, r4
+  mov #-32767, r6
+  
+  call #EXEC1
+	
+  
+  mov #-4084, r4
+  mov #4082, r6
+  
+  call #EXEC1
+	
+  
+  mov #155, r4
+  mov #-19714, r6
+  
+  call #EXEC1
+	
+  
+  mov #18495, r4
+  mov #22911, r6
+  
+  call #EXEC1
+	
+  
+  mov #25724, r4
+  mov #27839, r6
+  
+  call #EXEC1
+	
+  
+  mov #-17673, r4
+  mov #-23306, r6
+  
+  call #EXEC1
+	
+  
+  mov #5212, r4
+  mov #-15869, r6
+  
+  call #EXEC1
+	
+  
+  mov #-1, r4
+  mov #-7661, r6
+  
+  call #EXEC1
+	
+  
+  mov #801, r4
+  mov #14425, r6
+  
+  call #EXEC1
+	
+  
+  mov #8215, r4
+  mov #10399, r6
+  
+  call #EXEC1
+	
+  
+  mov #15360, r4
+  mov #-32258, r6
+  
+  call #EXEC1
+	
+  
+  mov #1019, r4
+  mov #8355, r6
+  
+  call #EXEC1
+	
+  
+  mov #12612, r4
+  mov #14484, r6
+  
+  call #EXEC1
+	
+  
+  mov #10496, r4
+  mov #-5046, r6
+  
+  call #EXEC1
+	
+  
+  mov #17417, r4
+  mov #7724, r6
+  
+  call #EXEC1
+	
+  
+  mov #-2050, r4
+  mov #2049, r6
+  
+  call #EXEC1
+	
+  
+  mov #-7519, r4
+  mov #-28668, r6
+  
+  call #EXEC1
+	
+  
+  mov #30976, r4
+  mov #15360, r6
+  
+  call #EXEC1
+	
+  
+  mov #1552, r4
+  mov #4240, r6
+  
+  call #EXEC1
+	
+  
+  mov #768, r4
+  mov #16384, r6
+  
+  call #EXEC1
+	
+  
+  mov #4112, r4
+  mov #16, r6
+  
+  call #EXEC1
+	
+  
+  mov #-32760, r4
+  mov #8, r6
+  
+  call #EXEC1
+	
+  
+  mov #21045, r4
+  mov #12885, r6
+  
+  call #EXEC1
+	
+  
+  mov #-5665, r4
+  mov #14567, r6
+  
+  call #EXEC1
+	
+  
+  mov #29807, r4
+  mov #23795, r6
+  
+  call #EXEC1
+	
+  
+  mov #14967, r4
+  mov #12281, r6
+  
+  call #EXEC1
+	
+  
+  mov #6347, r4
+  mov #-6604, r6
+  
+  call #EXEC1
+	
+  
+  mov #18857, r4
+  mov #7571, r6
+  
+  call #EXEC1
+	
+  
+  mov #-24884, r4
+  mov #11007, r6
+  
+  call #EXEC1
+	
+  
+  mov #20390, r4
+  mov #5567, r6
+  
+  call #EXEC1
+	
+  
+  mov #23883, r4
+  mov #-20887, r6
+  
+  call #EXEC1
+	
+  
+  mov #11941, r4
+  mov #-10444, r6
+  
+  call #EXEC1
+	
+  
+  mov #-21377, r4
+  mov #20332, r6
+  
+  call #EXEC1
+	
+  
+  mov #-10545, r4
+  mov #10166, r6
+  
+  call #EXEC1
+	
+  
+  mov #-5279, r4
+  mov #-27685, r6
+  
+  call #EXEC1
+	
+  
+  mov #30128, r4
+  mov #18925, r6
+  
+  call #EXEC1
+	
+  
+  mov #5708, r4
+  mov #23314, r6
+  
+  call #EXEC1
+	
+  
+  mov #32767, r4
+  mov #11657, r6
+  
+  call #EXEC1
+	
+  
+  mov #29215, r4
+  mov #27670, r6
+  
+  call #EXEC1
+	
+  
+  mov #-24797, r4
+  mov #32249, r6
+  
+  call #EXEC1
+	
+  
+  mov #22941, r4
+  mov #-23186, r6
+  
+  call #EXEC1
+	
+  
+  mov #27807, r4
+  mov #-11529, r6
+  
+  call #EXEC1
+	
+  
+  mov #-24536, r4
+  mov #12905, r6
+  
+  call #EXEC1
+	
+	;sw r15, 0(r31)    ; store result
+	nop
+	nop
+	nop
+	nop		
+end:	jmp end

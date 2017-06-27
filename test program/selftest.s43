@@ -1,0 +1,3674 @@
+.include "pmem_defs.asm"
+
+.global main
+
+
+
+
+
+	
+main:
+
+	/*------------------ Emulated instructions test ---------*/
+	mov #0x0001,r4
+	mov #0xffff,r5
+	ADD r5,r4 ;
+	ADC r6,r5 ; 
+	
+	
+	ADD.B @R13,0(R12) ; Add LSDs
+	ADC.B 1(R12) ; Add carry to MSD
+
+	CLRC ; C=0: defines start
+	DADD @R13,0(R12) ; add 16-bit counter to low word of 32-bit counter
+	DADC 2(R12) ; add carry to high word of 32-bit counter
+
+	CLRC ; Reset carry
+	; next instruction’s start condition is defined
+	DADD.B R5,0(R8) ; Add LSDs + C
+	DADC 1(R8) ; Add carry to MSDs
+	
+	mov #0x00ff,r10
+	DEC R10
+	DECD R10
+	DECD.B R10
+
+	DINT
+	nop
+	EINT
+
+	INCD.B 0(SP)
+
+
+	MOV #00AEh,R5 ; R5 = 000AEh
+	INV R5 ; Invert R5, R5 = 0FF51h
+	INC R5 ; R5 is now negated, R5 = 0FF52h
+
+.set   LEO,  DMEM_222
+	MOV.B #0AEh,LEO ; MEM(LEO) = 0AEh
+	INV.B LEO ; Invert LEO, MEM(LEO) = 051h
+	INC.B LEO ; MEM(LEO) is negated,MEM(LEO) = 052h
+
+	SUB @R13,0(R12) ; Subtract LSDs
+	SBC 2(R12) ; Subtract carry from MSD
+
+	SUB.B @R13,0(R12) ; Subtract LSDs
+	SBC.B 1(R12) ; Subtract carry from MSD
+
+
+		MOV   #DMEM_250, R1       ; # INITIALIZE STACK POINTER
+		MOV   #0x0000, &DMEM_200
+		MOV   #0x0000, R15
+
+/* ---------------------- REGISTER FILE --------------------- */
+
+
+		mov r0, r1
+
+		mov #0x0000, r1 
+		mov #0x0000, r2 
+		mov #0x0000, r3 
+		mov #0x0000, r4 
+		mov #0x0000, r5 
+		mov #0x0000, r6 
+		mov #0x0000, r7 
+		mov #0x0000, r8 
+		mov #0x0000, r9 
+		mov #0x0000, r10
+		mov #0x0000, r11
+		mov #0x0000, r12
+		mov #0x0000, r13
+		mov #0x0000, r14
+		mov #0x0000, r15
+
+		push r5
+		pop r5
+
+		mov r1,  r1 
+		mov r2,  r2 
+		mov r3,  r3 
+		mov r4,  r4 
+		mov r5,  r5 
+		mov r6,  r6 
+		mov r7,  r7 
+		mov r8,  r8 
+		mov r9,  r9 
+		mov r10, r10
+		mov r11, r11
+		mov r12, r12
+		mov r13, r13
+		mov r14, r14
+		mov r15, r15
+
+		mov #0xffff, r1 
+		mov #0xffff, r2 
+		mov #0xffff, r3 
+		mov #0xffff, r4 
+		mov #0xffff, r5 
+		mov #0xffff, r6 
+		mov #0xffff, r7 
+		mov #0xffff, r8 
+		mov #0xffff, r9 
+		mov #0xffff, r10
+		mov #0xffff, r11
+		mov #0xffff, r12
+		mov #0xffff, r13
+		mov #0xffff, r14
+		mov #0xffff, r15
+
+		push r6
+		pop r6
+
+		mov r1,  r1 
+		mov r2,  r2 
+		mov r3,  r3 
+		mov r4,  r4 
+		mov r5,  r5 
+		mov r6,  r6 
+		mov r7,  r7 
+		mov r8,  r8 
+		mov r9,  r9 
+		mov r10, r10
+		mov r11, r11
+		mov r12, r12
+		mov r13, r13
+		mov r14, r14
+		mov r15, r15
+		
+		setc
+		setn
+		setz
+
+		nop
+		
+		clrc
+		clrn
+		clrz
+		
+	    	nop
+		
+		clr r1
+		clr r2
+		clr r3
+		clr r4
+		clr r5
+		clr r6
+		clr r7
+		clr r8
+		clr r9
+		clr r10
+		clr r11
+		clr r12
+		clr r13
+		clr r14
+		clr r15
+
+		dec r1
+		dec r2
+		dec r3
+		dec r4
+		dec r5
+		dec r6
+		dec r7
+		dec r8
+		dec r9
+		dec r10
+		dec r11
+		dec r12
+		dec r13
+		dec r14
+		dec r15
+		
+		nop
+		
+		inc r1
+		inc r2
+		inc r3
+		inc r4
+		inc r5
+		inc r6
+		inc r7
+		inc r8
+		inc r9
+		inc r10
+		inc r11
+		inc r12
+		inc r13
+		inc r14
+		inc r15
+	
+		nop	
+			
+			/*-----------------------  END REGISTER FILE -----------------------------------*/
+	
+	
+	/*------------------- AUTO-INCREMENT -----------------------------------------*/
+
+	/* ---------------------- INITIALIZE MEMORY --------------------- */
+
+    	mov     #0x0000,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+    	mov     #0x1111,    &DMEM_204
+    	mov     #0x2222,    &DMEM_206
+    	mov     #0x3333,    &DMEM_208
+    	mov     #0x4444,    &DMEM_20A
+    	mov     #0x5555,    &DMEM_20C
+    	mov     #0x6666,    &DMEM_20E
+    	mov     #0x7777,    &DMEM_210
+    	mov     #0x8888,    &DMEM_212
+    	mov     #0x9999,    &DMEM_214
+    	mov     #0xAAAA,    &DMEM_216
+    	mov     #0xBBBB,    &DMEM_218
+    	mov     #0xCCCC,    &DMEM_21A
+    	mov     #0xDDDD,    &DMEM_21C
+    	mov     #0xEEEE,    &DMEM_21E
+    	mov     #0xFFFF,    &DMEM_220
+    	mov     #0x1122,    &DMEM_222
+
+    	mov     #0x0001,    &DMEM_200
+
+        /* ---------------------- AUTO-INCREMENT: R1 --------------------- */
+
+    	mov     #DMEM_204,  r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x1000,    &DMEM_200
+	mov        @r1+,    &DMEM_202
+    	mov     #0x1001,    &DMEM_200
+	mov        @r1+,    &DMEM_202
+    	mov     #0x1002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R2 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0004,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x2000,    &DMEM_200
+	mov        @r2+,    &DMEM_202
+    	mov     #0x2001,    &DMEM_200
+	mov        @r2+,    &DMEM_202
+    	mov     #0x2002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R3 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #DMEM_208,  r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x3000,    &DMEM_200
+	mov        @r3+,    &DMEM_202
+    	mov     #0x3001,    &DMEM_200
+	mov        @r3+,    &DMEM_202
+    	mov     #0x3002,    &DMEM_200
+	swpb       @r3+
+   	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R4 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #DMEM_20A,  r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x4000,    &DMEM_200
+	mov        @r4+,    &DMEM_202
+    	mov     #0x4001,    &DMEM_200
+	mov        @r4+,    &DMEM_202
+    	mov     #0x4002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R5 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #DMEM_20C,  r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x5000,    &DMEM_200
+	mov        @r5+,    &DMEM_202
+    	mov     #0x5001,    &DMEM_200
+	mov        @r5+,    &DMEM_202
+    	mov     #0x5002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R6 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #DMEM_20E,  r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x6000,    &DMEM_200
+	mov        @r6+,    &DMEM_202
+    	mov     #0x6001,    &DMEM_200
+	mov        @r6+,    &DMEM_202
+    	mov     #0x6002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R7 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #DMEM_210,  r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x7000,    &DMEM_200
+	mov        @r7+,    &DMEM_202
+    	mov     #0x7001,    &DMEM_200
+	mov        @r7+,    &DMEM_202
+    	mov     #0x7002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R8 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #DMEM_212,  r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x8000,    &DMEM_200
+	mov        @r8+,    &DMEM_202
+    	mov     #0x8001,    &DMEM_200
+	mov        @r8+,    &DMEM_202
+    	mov     #0x8002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R9 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #DMEM_214,  r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x9000,    &DMEM_200
+	mov         @r9+,   &DMEM_202
+    	mov     #0x9001,    &DMEM_200
+	mov         @r9+,   &DMEM_202
+    	mov     #0x9002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R10 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #DMEM_216,  r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xA000,    &DMEM_200
+	mov       @r10+,    &DMEM_202
+    	mov     #0xA001,    &DMEM_200
+	mov       @r10+,    &DMEM_202
+    	mov     #0xA002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R11 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #DMEM_218,  r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xB000,    &DMEM_200
+	mov       @r11+,    &DMEM_202
+    	mov     #0xB001,    &DMEM_200
+	mov       @r11+,    &DMEM_202
+    	mov     #0xB002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R12 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #DMEM_21A,  r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xC000,    &DMEM_200
+	mov       @r12+,    &DMEM_202
+    	mov     #0xC001,    &DMEM_200
+	mov       @r12+,    &DMEM_202
+    	mov     #0xC002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R13 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #DMEM_21C,  r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xD000,    &DMEM_200
+	mov       @r13+,    &DMEM_202
+    	mov     #0xD001,    &DMEM_200
+	mov       @r13+,    &DMEM_202
+    	mov     #0xD002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R14 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+     	mov     #DMEM_21E,  r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xE000,    &DMEM_200
+	mov       @r14+,    &DMEM_202
+    	mov     #0xE001,    &DMEM_200
+	mov       @r14+,    &DMEM_202
+    	mov     #0xE002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R15 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #DMEM_220,  r15
+
+    	mov     #0xF000,    &DMEM_200
+	mov       @r15+,    &DMEM_202
+    	mov     #0xF001,    &DMEM_200
+	mov       @r15+,    &DMEM_202
+    	mov     #0xF002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+		
+	  /* ---------------------- INITIALIZE MEMORY --------------------- */
+
+    	mov     #0x0000,    &DMEM_200
+    	mov     #0x1020,    &DMEM_202
+    	mov     #0x1122,    &DMEM_204
+    	mov     #0x3344,    &DMEM_206
+    	mov     #0x5566,    &DMEM_208
+    	mov     #0x7788,    &DMEM_20A
+    	mov     #0x99AA,    &DMEM_20C
+    	mov     #0xBBCC,    &DMEM_20E
+    	mov     #0xDDEE,    &DMEM_210
+    	mov     #0xFF21,    &DMEM_212
+    	mov     #0x1223,    &DMEM_214
+    	mov     #0x3445,    &DMEM_216
+    	mov     #0x5667,    &DMEM_218
+    	mov     #0x7889,    &DMEM_21A
+    	mov     #0x9AAB,    &DMEM_21C
+    	mov     #0xBCCD,    &DMEM_21E
+    	mov     #0xDEEF,    &DMEM_220
+    	mov     #0xF001,    &DMEM_222
+
+    	mov     #0x0001,    &DMEM_200
+
+        /* ---------------------- AUTO-INCREMENT: R1 --------------------- */
+        /*                                                                 */
+        /* NOTE:	 it increment by 2 even in byte mode               */
+
+    	mov     #DMEM_204,  r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x1000,    &DMEM_200
+	mov.b      @r1+,    &DMEM_202
+    	mov     #0x1001,    &DMEM_200
+	mov.b      @r1+,    &DMEM_202
+    	mov     #0x1002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R2 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0004,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x2000,    &DMEM_200
+	mov.b      @r2+,    &DMEM_202
+    	mov     #0x2001,    &DMEM_200
+	mov.b      @r2+,    &DMEM_202
+    	mov     #0x2002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R3 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #DMEM_208,  r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x3000,    &DMEM_200
+	mov.b      @r3+,    &DMEM_202
+    	mov     #0x3001,    &DMEM_200
+	mov.b      @r3+,    &DMEM_202
+    	mov     #0x3002,    &DMEM_200
+	swpb       @r3+
+   	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R4 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #DMEM_20A,  r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x4000,    &DMEM_200
+	mov.b      @r4+,    &DMEM_202
+    	mov     #0x4001,    &DMEM_200
+	mov.b      @r4+,    &DMEM_202
+    	mov     #0x4002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R5 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #DMEM_20C,  r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x5000,    &DMEM_200
+	mov.b      @r5+,    &DMEM_202
+    	mov     #0x5001,    &DMEM_200
+	mov.b      @r5+,    &DMEM_202
+    	mov     #0x5002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R6 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #DMEM_20E,  r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x6000,    &DMEM_200
+	mov.b      @r6+,    &DMEM_202
+    	mov     #0x6001,    &DMEM_200
+	mov.b      @r6+,    &DMEM_202
+    	mov     #0x6002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R7 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #DMEM_210,  r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x7000,    &DMEM_200
+	mov.b      @r7+,    &DMEM_202
+    	mov     #0x7001,    &DMEM_200
+	mov.b      @r7+,    &DMEM_202
+    	mov     #0x7002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R8 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #DMEM_212,  r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x8000,    &DMEM_200
+	mov.b      @r8+,    &DMEM_202
+    	mov     #0x8001,    &DMEM_200
+	mov.b      @r8+,    &DMEM_202
+    	mov     #0x8002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R9 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #DMEM_214,  r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0x9000,    &DMEM_200
+	mov.b       @r9+,   &DMEM_202
+    	mov     #0x9001,    &DMEM_200
+	mov.b       @r9+,   &DMEM_202
+    	mov     #0x9002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R10 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #DMEM_216,  r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xA000,    &DMEM_200
+	mov.b     @r10+,    &DMEM_202
+    	mov     #0xA001,    &DMEM_200
+	mov.b     @r10+,    &DMEM_202
+    	mov     #0xA002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R11 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #DMEM_218,  r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xB000,    &DMEM_200
+	mov.b     @r11+,    &DMEM_202
+    	mov     #0xB001,    &DMEM_200
+	mov.b     @r11+,    &DMEM_202
+    	mov     #0xB002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R12 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #DMEM_21A,  r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xC000,    &DMEM_200
+	mov.b     @r12+,    &DMEM_202
+    	mov     #0xC001,    &DMEM_200
+	mov.b     @r12+,    &DMEM_202
+    	mov     #0xC002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R13 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #DMEM_21C,  r13
+    	mov     #0x0000,    r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xD000,    &DMEM_200
+	mov.b     @r13+,    &DMEM_202
+    	mov     #0xD001,    &DMEM_200
+	mov.b     @r13+,    &DMEM_202
+    	mov     #0xD002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R14 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+     	mov     #DMEM_21E,  r14
+    	mov     #0x0000,    r15
+
+    	mov     #0xE000,    &DMEM_200
+	mov.b     @r14+,    &DMEM_202
+    	mov     #0xE001,    &DMEM_200
+	mov.b     @r14+,    &DMEM_202
+    	mov     #0xE002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+        /* ---------------------- AUTO-INCREMENT: R15 --------------------- */
+
+    	mov     #0x0000,    r1
+    	mov     #0x0000,    r2
+    	mov     #0x0000,    r3
+    	mov     #0x0000,    r4
+    	mov     #0x0000,    r5
+    	mov     #0x0000,    r6
+    	mov     #0x0000,    r7
+    	mov     #0x0000,    r8
+    	mov     #0x0000,    r9
+    	mov     #0x0000,    r10
+    	mov     #0x0000,    r11
+    	mov     #0x0000,    r12
+    	mov     #0x0000,    r13
+    	mov     #0x0000,    r14
+    	mov     #DMEM_220,  r15
+
+    	mov     #0xF000,    &DMEM_200
+	mov.b     @r15+,    &DMEM_202
+    	mov     #0xF001,    &DMEM_200
+	mov.b     @r15+,    &DMEM_202
+    	mov     #0xF002,    &DMEM_200
+    	mov     #0x0000,    &DMEM_202
+
+		
+		
+	/*---------------  SFR ----------------------------------------*/
+	   /* -------   READ/WRITE IFG1       ------ */
+
+	mov   #0x3000, r15
+
+	mov   &IFG1,   r10
+	mov   #0x3001, r15
+
+	mov   #0x5555, &IFG1
+	mov   &IFG1,   r10
+	mov   #0x3002, r15
+	
+	mov   #0xAAAA, &IFG1
+	mov   &IFG1,   r10
+	mov   #0x3003, r15
+
+	mov.b #0x55,   &IFG1
+	mov.b &IFG1,   r10
+	mov   #0x3004, r15
+	
+	mov.b #0xAA,    &IFG1_HI
+	mov.b &IFG1_HI, r10
+	mov   #0x3005,  r15
+
+	mov   #0x0000, &IFG1
+	mov   &IFG1,   r10
+	mov   #0x3006, r15
+	
+	
+        /* -------   READ/WRITE IE1         ------ */
+	
+	mov   #0x4000, r15
+
+	mov   &IE1,    r10
+	mov   #0x4001, r15
+
+	mov   #0x5555, &IE1
+	mov   &IE1,    r10
+	mov   #0x4002, r15
+	
+	mov   #0xAAAA, &IE1
+	mov   &IE1,    r10
+	mov   #0x4003, r15
+	
+	mov.b #0x55,   &IE1
+	mov.b &IE1,    r10
+	mov   #0x4004, r15
+	
+	mov.b #0xAA,    &IE1_HI
+	mov.b &IE1_HI,  r10
+	mov   #0x4005,  r15
+
+	mov   #0x0000, &IE1
+	mov   &IE1,    r10
+	mov   #0x4006, r15
+	
+	
+        /* -------   READ/WRITE CPU_ID     ------ */
+
+	mov   #0x5000, r15
+
+	mov   &CPU_ID_LO, r10
+	mov   &CPU_ID_HI, r11
+	mov   #0x5001, r15
+
+	mov   0x5554,     &CPU_ID_LO
+	mov   0xAAAA,     &CPU_ID_HI
+	mov   &CPU_ID_LO, r10
+	mov   &CPU_ID_HI, r11
+	mov   #0x5002, r15
+		
+	mov   0xAAAA,     &CPU_ID_LO
+	mov   0x5554,     &CPU_ID_HI
+	mov   &CPU_ID_LO, r10
+	mov   &CPU_ID_HI, r11		
+	mov   #0x5003, r15
+
+
+        /* -------   READ/WRITE CPU_NR     ------ */
+
+	mov   #0x6000, r15
+
+	mov   &CPU_NR, r10
+	mov   #0x6001, r15
+
+	mov   0x5554,  &CPU_NR
+	mov   &CPU_NR, r10
+	mov   #0x6002, r15
+		
+	mov   0xAAAA,  &CPU_NR
+	mov   &CPU_NR, r10
+	mov   #0x6003, r15
+
+    /*-------------------------------END  SFR --------------------------------*/
+
+		/*------------------ JC ---------------- */
+
+
+		mov     #0x0001, r2
+		mov     #0x1234, r4
+		jc      test_jc_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jc_bckwrd:
+		mov     #0x9abc, r6
+		jc      test_jc_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jc_fwrd1:
+		mov     #0x5678, r5
+		jc      test_jc_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jc_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- TEST JUMP FOR ALL FLAG CONFIGURATIONS ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jc      test_jc_0
+		mov     #0x0000, r4
+		test_jc_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jc      test_jc_1
+		mov     #0x0000, r4
+		test_jc_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jc      test_jc_2
+		mov     #0x0000, r4
+		test_jc_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jc      test_jc_3
+		mov     #0x0000, r4
+		test_jc_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jc      test_jc_4
+		mov     #0x0000, r4
+		test_jc_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jc      test_jc_5
+		mov     #0x0000, r4
+		test_jc_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jc      test_jc_6
+		mov     #0x0000, r4
+		test_jc_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jc      test_jc_7
+		mov     #0x0000, r4
+		test_jc_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jc      test_jc_8
+		mov     #0x0000, r4
+		test_jc_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jc      test_jc_9
+		mov     #0x0000, r4
+		test_jc_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jc      test_jc_A
+		mov     #0x0000, r4
+		test_jc_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jc      test_jc_B
+		mov     #0x0000, r4
+		test_jc_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jc      test_jc_C
+		mov     #0x0000, r4
+		test_jc_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jc      test_jc_D
+		mov     #0x0000, r4
+		test_jc_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jc      test_jc_E
+		mov     #0x0000, r4
+		test_jc_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jc      test_jc_F
+		mov     #0x0000, r4
+		test_jc_F:
+		mov     #0x200F, r15
+
+		/* -------------- JEQ ------------------- */
+
+		mov     #0x0002, r2
+		mov     #0x1234, r4
+		jeq     test_jeq_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jeq_bckwrd:
+		mov     #0x9abc, r6
+		jeq     test_jeq_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jeq_fwrd1:
+		mov     #0x5678, r5
+		jeq     test_jeq_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jeq_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- TEST JUMP FOR ALL FLAG CONFIGURATIONS ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jeq     test_jeq_0
+		mov     #0x0000, r4
+		test_jeq_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jeq     test_jeq_1
+		mov     #0x0000, r4
+		test_jeq_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jeq     test_jeq_2
+		mov     #0x0000, r4
+		test_jeq_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jeq     test_jeq_3
+		mov     #0x0000, r4
+		test_jeq_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jeq     test_jeq_4
+		mov     #0x0000, r4
+		test_jeq_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jeq     test_jeq_5
+		mov     #0x0000, r4
+		test_jeq_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jeq     test_jeq_6
+		mov     #0x0000, r4
+		test_jeq_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jeq     test_jeq_7
+		mov     #0x0000, r4
+		test_jeq_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jeq     test_jeq_8
+		mov     #0x0000, r4
+		test_jeq_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jeq     test_jeq_9
+		mov     #0x0000, r4
+		test_jeq_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jeq     test_jeq_A
+		mov     #0x0000, r4
+		test_jeq_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jeq     test_jeq_B
+		mov     #0x0000, r4
+		test_jeq_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jeq     test_jeq_C
+		mov     #0x0000, r4
+		test_jeq_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jeq     test_jeq_D
+		mov     #0x0000, r4
+		test_jeq_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jeq     test_jeq_E
+		mov     #0x0000, r4
+		test_jeq_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jeq     test_jeq_F
+		mov     #0x0000, r4
+		test_jeq_F:
+		mov     #0x200F, r15
+
+		  /* -------------- JGE ------------------- */
+
+		mov     #0x0000, r2
+		mov     #0x1234, r4
+		jge     test_jge_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jge_bckwrd:
+		mov     #0x9abc, r6
+		jge     test_jge_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jge_fwrd1:
+		mov     #0x5678, r5
+		jge     test_jge_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jge_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- TEST JUMP FOR ALL FLAG CONFIGURATIONS ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jge     test_jge_0
+		mov     #0x0000, r4
+		test_jge_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jge     test_jge_1
+		mov     #0x0000, r4
+		test_jge_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jge     test_jge_2
+		mov     #0x0000, r4
+		test_jge_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jge     test_jge_3
+		mov     #0x0000, r4
+		test_jge_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jge     test_jge_4
+		mov     #0x0000, r4
+		test_jge_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jge     test_jge_5
+		mov     #0x0000, r4
+		test_jge_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jge     test_jge_6
+		mov     #0x0000, r4
+		test_jge_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jge     test_jge_7
+		mov     #0x0000, r4
+		test_jge_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jge     test_jge_8
+		mov     #0x0000, r4
+		test_jge_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jge     test_jge_9
+		mov     #0x0000, r4
+		test_jge_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jge     test_jge_A
+		mov     #0x0000, r4
+		test_jge_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jge     test_jge_B
+		mov     #0x0000, r4
+		test_jge_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jge     test_jge_C
+		mov     #0x0000, r4
+		test_jge_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jge     test_jge_D
+		mov     #0x0000, r4
+		test_jge_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jge     test_jge_E
+		mov     #0x0000, r4
+		test_jge_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jge     test_jge_F
+		mov     #0x0000, r4
+		test_jge_F:
+		mov     #0x200F, r15
+
+		  /* -------------- JL ------------------- */
+
+		mov     #0x0100, r2
+		mov     #0x1234, r4
+		jl      test_jl_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jl_bckwrd:
+		mov     #0x9abc, r6
+		jl      test_jl_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jl_fwrd1:
+		mov     #0x5678, r5
+		jl      test_jl_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jl_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- TEST JUMP FOR ALL FLAG CONFIGURATIONS ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jl      test_jl_0
+		mov     #0x0000, r4
+		test_jl_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jl      test_jl_1
+		mov     #0x0000, r4
+		test_jl_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jl      test_jl_2
+		mov     #0x0000, r4
+		test_jl_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jl      test_jl_3
+		mov     #0x0000, r4
+		test_jl_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jl      test_jl_4
+		mov     #0x0000, r4
+		test_jl_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jl      test_jl_5
+		mov     #0x0000, r4
+		test_jl_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jl      test_jl_6
+		mov     #0x0000, r4
+		test_jl_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jl      test_jl_7
+		mov     #0x0000, r4
+		test_jl_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jl      test_jl_8
+		mov     #0x0000, r4
+		test_jl_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jl      test_jl_9
+		mov     #0x0000, r4
+		test_jl_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jl      test_jl_A
+		mov     #0x0000, r4
+		test_jl_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jl      test_jl_B
+		mov     #0x0000, r4
+		test_jl_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jl      test_jl_C
+		mov     #0x0000, r4
+		test_jl_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jl      test_jl_D
+		mov     #0x0000, r4
+		test_jl_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jl      test_jl_E
+		mov     #0x0000, r4
+		test_jl_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jl      test_jl_F
+		mov     #0x0000, r4
+		test_jl_F:
+		mov     #0x200F, r15
+
+		  /* -------------- JMP ------------------- */
+
+		mov     #0x0000, r2
+		mov     #0x1234, r4
+		jmp     test_jmp_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jmp_bckwrd:
+		mov     #0x9abc, r6
+		jmp test_jmp_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jmp_fwrd1:
+		mov     #0x5678, r5
+		jmp test_jmp_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jmp_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- TEST JUMP FOR ALL FLAG CONFIGURATIONS ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jmp     test_jmp_0
+		mov     #0x0000, r4
+		test_jmp_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jmp     test_jmp_1
+		mov     #0x0000, r4
+		test_jmp_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jmp     test_jmp_2
+		mov     #0x0000, r4
+		test_jmp_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jmp     test_jmp_3
+		mov     #0x0000, r4
+		test_jmp_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jmp     test_jmp_4
+		mov     #0x0000, r4
+		test_jmp_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jmp     test_jmp_5
+		mov     #0x0000, r4
+		test_jmp_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jmp     test_jmp_6
+		mov     #0x0000, r4
+		test_jmp_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jmp     test_jmp_7
+		mov     #0x0000, r4
+		test_jmp_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jmp     test_jmp_8
+		mov     #0x0000, r4
+		test_jmp_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jmp     test_jmp_9
+		mov     #0x0000, r4
+		test_jmp_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jmp     test_jmp_A
+		mov     #0x0000, r4
+		test_jmp_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jmp     test_jmp_B
+		mov     #0x0000, r4
+		test_jmp_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jmp     test_jmp_C
+		mov     #0x0000, r4
+		test_jmp_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jmp     test_jmp_D
+		mov     #0x0000, r4
+		test_jmp_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jmp     test_jmp_E
+		mov     #0x0000, r4
+		test_jmp_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jmp     test_jmp_F
+		mov     #0x0000, r4
+		test_jmp_F:
+		mov     #0x200F, r15
+
+		  /* -------------- JN ------------------- */
+
+		mov     #0x0004, r2
+		mov     #0x1234, r4
+		jn      test_jn_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jn_bckwrd:
+		mov     #0x9abc, r6
+		jn      test_jn_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jn_fwrd1:
+		mov     #0x5678, r5
+		jn      test_jn_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jn_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- TEST JUMP FOR ALL FLAG CONFIGURATIONS ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jn      test_jn_0
+		mov     #0x0000, r4
+		test_jn_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jn      test_jn_1
+		mov     #0x0000, r4
+		test_jn_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jn      test_jn_2
+		mov     #0x0000, r4
+		test_jn_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jn      test_jn_3
+		mov     #0x0000, r4
+		test_jn_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jn      test_jn_4
+		mov     #0x0000, r4
+		test_jn_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jn      test_jn_5
+		mov     #0x0000, r4
+		test_jn_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jn      test_jn_6
+		mov     #0x0000, r4
+		test_jn_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jn      test_jn_7
+		mov     #0x0000, r4
+		test_jn_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jn      test_jn_8
+		mov     #0x0000, r4
+		test_jn_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jn      test_jn_9
+		mov     #0x0000, r4
+		test_jn_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jn      test_jn_A
+		mov     #0x0000, r4
+		test_jn_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jn      test_jn_B
+		mov     #0x0000, r4
+		test_jn_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jn      test_jn_C
+		mov     #0x0000, r4
+		test_jn_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jn      test_jn_D
+		mov     #0x0000, r4
+		test_jn_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jn      test_jn_E
+		mov     #0x0000, r4
+		test_jn_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jn      test_jn_F
+		mov     #0x0000, r4
+		test_jn_F:
+		mov     #0x200F, r15
+
+		  /* -------------- JNC------------------- */
+
+		mov     #0x0000, r2
+		mov     #0x1234, r4
+		jnc     test_jnc_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jnc_bckwrd:
+		mov     #0x9abc, r6
+		jnc     test_jnc_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jnc_fwrd1:
+		mov     #0x5678, r5
+		jnc     test_jnc_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jnc_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- TEST JUMP FOR ALL FLAG CONFIGURATIONS ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jnc     test_jnc_0
+		mov     #0x0000, r4
+		test_jnc_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jnc     test_jnc_1
+		mov     #0x0000, r4
+		test_jnc_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jnc     test_jnc_2
+		mov     #0x0000, r4
+		test_jnc_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jnc     test_jnc_3
+		mov     #0x0000, r4
+		test_jnc_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jnc     test_jnc_4
+		mov     #0x0000, r4
+		test_jnc_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jnc     test_jnc_5
+		mov     #0x0000, r4
+		test_jnc_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jnc     test_jnc_6
+		mov     #0x0000, r4
+		test_jnc_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jnc     test_jnc_7
+		mov     #0x0000, r4
+		test_jnc_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jnc     test_jnc_8
+		mov     #0x0000, r4
+		test_jnc_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jnc     test_jnc_9
+		mov     #0x0000, r4
+		test_jnc_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jnc     test_jnc_A
+		mov     #0x0000, r4
+		test_jnc_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jnc     test_jnc_B
+		mov     #0x0000, r4
+		test_jnc_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jnc     test_jnc_C
+		mov     #0x0000, r4
+		test_jnc_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jnc     test_jnc_D
+		mov     #0x0000, r4
+		test_jnc_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jnc     test_jnc_E
+		mov     #0x0000, r4
+		test_jnc_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jnc     test_jnc_F
+		mov     #0x0000, r4
+		test_jnc_F:
+		mov     #0x200F, r15
+
+		  /* -------------- TEST JUMP FORWARD AND BACKWARD ------------------- */
+
+		mov     #0x0000, r2
+		mov     #0x1234, r4
+		jne     test_jne_fwrd1
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		test_jne_bckwrd:
+		mov     #0x9abc, r6
+		jne     test_jne_fwrd2
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		mov     #0x0000, r6
+		test_jne_fwrd1:
+		mov     #0x5678, r5
+		jne     test_jne_bckwrd
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r4
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+		mov     #0x0000, r5
+
+		test_jne_fwrd2:
+
+		mov     #0x1000, r15
+
+		  /* -------------- JNE  ------------ */
+
+		mov     #0x0000, r2             ;# {V,N,Z,C} = 4'b0000
+		mov     #0x1234, r4
+		jne     test_jne_0
+		mov     #0x0000, r4
+		test_jne_0:
+		mov     #0x2000, r15
+
+		mov     #0x0001, r2             ;# {V,N,Z,C} = 4'b0001
+		mov     #0x1234, r4
+		jne     test_jne_1
+		mov     #0x0000, r4
+		test_jne_1:
+		mov     #0x2001, r15
+
+		mov     #0x0002, r2             ;# {V,N,Z,C} = 4'b0010
+		mov     #0x1234, r4
+		jne     test_jne_2
+		mov     #0x0000, r4
+		test_jne_2:
+		mov     #0x2002, r15
+
+		mov     #0x0003, r2             ;# {V,N,Z,C} = 4'b0011
+		mov     #0x1234, r4
+		jne     test_jne_3
+		mov     #0x0000, r4
+		test_jne_3:
+		mov     #0x2003, r15
+
+		mov     #0x0004, r2             ;# {V,N,Z,C} = 4'b0100
+		mov     #0x1234, r4
+		jne     test_jne_4
+		mov     #0x0000, r4
+		test_jne_4:
+		mov     #0x2004, r15
+
+		mov     #0x0005, r2             ;# {V,N,Z,C} = 4'b0101
+		mov     #0x1234, r4
+		jne     test_jne_5
+		mov     #0x0000, r4
+		test_jne_5:
+		mov     #0x2005, r15
+
+		mov     #0x0006, r2             ;# {V,N,Z,C} = 4'b0110
+		mov     #0x1234, r4
+		jne     test_jne_6
+		mov     #0x0000, r4
+		test_jne_6:
+		mov     #0x2006, r15
+
+		mov     #0x0007, r2             ;# {V,N,Z,C} = 4'b0111
+		mov     #0x1234, r4
+		jne     test_jne_7
+		mov     #0x0000, r4
+		test_jne_7:
+		mov     #0x2007, r15
+
+		mov     #0x0100, r2             ;# {V,N,Z,C} = 4'b1000
+		mov     #0x1234, r4
+		jne     test_jne_8
+		mov     #0x0000, r4
+		test_jne_8:
+		mov     #0x2008, r15
+
+		mov     #0x0101, r2             ;# {V,N,Z,C} = 4'b1001
+		mov     #0x1234, r4
+		jne     test_jne_9
+		mov     #0x0000, r4
+		test_jne_9:
+		mov     #0x2009, r15
+
+		mov     #0x0102, r2             ;# {V,N,Z,C} = 4'b1010
+		mov     #0x1234, r4
+		jne     test_jne_A
+		mov     #0x0000, r4
+		test_jne_A:
+		mov     #0x200A, r15
+
+		mov     #0x0103, r2             ;# {V,N,Z,C} = 4'b1011
+		mov     #0x1234, r4
+		jne     test_jne_B
+		mov     #0x0000, r4
+		test_jne_B:
+		mov     #0x200B, r15
+
+		mov     #0x0104, r2             ;# {V,N,Z,C} = 4'b1100
+		mov     #0x1234, r4
+		jne     test_jne_C
+		mov     #0x0000, r4
+		test_jne_C:
+		mov     #0x200C, r15
+
+		mov     #0x0105, r2             ;# {V,N,Z,C} = 4'b1101
+		mov     #0x1234, r4
+		jne     test_jne_D
+		mov     #0x0000, r4
+		test_jne_D:
+		mov     #0x200D, r15
+
+		mov     #0x0106, r2             ;# {V,N,Z,C} = 4'b1110
+		mov     #0x1234, r4
+		jne     test_jne_E
+		mov     #0x0000, r4
+		test_jne_E:
+		mov     #0x200E, r15
+
+		mov     #0x0107, r2             ;# {V,N,Z,C} = 4'b1111
+		mov     #0x1234, r4
+		jne     test_jne_F
+		mov     #0x0000, r4
+		test_jne_F:
+		mov     #0x200F, r15
+		
+	/*-------------------------- END JUMP ---------------------------*/
+	
+	/*------------------------------ ADD ROM -----------------------------------*/
+			
+
+				/* ---------------------- TEST WHEN SOURCE IS @Rn ------------------ */
+		.set   aRn_EDE,  DMEM_212+PMEM_EDE_LENGTH
+		.set   aRn_TONY, DMEM_214
+
+
+		  mov   #data_aRn_0x1111, r4
+		  mov            #0x6666, r5
+		  add                @r4, r5         ;# Add @r4+r5 (0x1111+0x6666=0x7777)
+
+		  mov   #data_aRn_0x000a, r4
+		  add                @r4, r0
+		  nop
+		  nop
+		  nop
+		  mov            #0x1234, r4         ;# Make sure the jump is taken
+test_aRn_PC:
+
+		  mov            #0x5432, &DMEM_210
+		  mov          #DMEM_200, r6
+		  mov   #data_aRn_0x1234, r7
+		  add                @r7, 16(r6)     ;# Write 0x1234+0x5432=0x6666 to memory @0x0210
+
+		  mov            #0x8e1c, &DMEM_212
+		  mov   #data_aRn_0x5f12, r7
+		  add                @r7, aRn_EDE    ;# Write 0x5f12+0x8e1c=0xed2e to memory @0x0212
+
+		  mov            #0x1541, &DMEM_214
+		  mov   #data_aRn_0x3112, r8
+		  add                @r8, &aRn_TONY  ;# Write 0x3112+0x1541=0x4653 to memory @0x0214
+
+		  mov            #0x1000, r15
+
+
+
+				/* ---------------------- TEST WHEN SOURCE IS @Rn+ ----------------- */
+		.set   aRni_EDE,  DMEM_212+PMEM_EDE_LENGTH
+		.set   aRni_TONY, DMEM_214
+
+		  mov   #data_aRni_0x2222, r4
+		  mov             #0x8888, r5
+		  add                @r4+, r5        ;# Add @r4+r5 (0x2222+0x8888=0xaaaa)
+		  add                @r4+, r5        ;# Add @r4+r5 (0x3333+0xaaaa=0xdddd)
+
+		  mov             #0xaaaa, r7
+		  mov   #data_aRni_0x000a, r6
+		  add                @r6+, r0
+		  nop
+		  nop
+		  nop
+		  mov             #0x1234, r7        ;# Make sure the jump is taken
+test_aRni_PC1:
+		  add                @r6+, r0
+		  nop
+		  nop
+		  nop
+		  nop
+		  nop
+		  mov             #0x1234, r7        ;# Make sure the jump is taken
+test_aRni_PC2:
+
+		  mov             #0x5432, &DMEM_210
+		  mov           #DMEM_200, r8
+		  mov   #data_aRni_0x1234, r10
+		  add               @r10+, 16(r8)     ;# Write 0x1234+0x5432=0x6666 to memory @0x0210
+		  add               @r10+, 16(r8)     ;# Write 0x2345+0x6666=0x89AB to memory @0x0210
+
+		  mov             #0x8e1c, &DMEM_212
+		  mov   #data_aRni_0x5f12, r8
+		  add                @r8+, aRni_EDE   ;# Write 0x5f12+0x8e1c=0xed2e to memory @0x0212
+		  add      @r8+, aRni_EDE   ;# Write 0x6345+0xed2e=0x5073 to memory @0x0212
+
+		  mov             #0x1541, &DMEM_214
+		  mov   #data_aRni_0x3112, r9
+		  add                @r9+, &aRni_TONY ;# Write 0x3112+0x1541=0x4653 to memory @0x0214
+		  add                @r9+, &aRni_TONY ;# Write 0x1123+0x4653=0x5776 to memory @0x0214
+
+		  mov             #0x2000, r15
+
+
+		/* ---------------------- TEST WHEN SOURCE IS x(Rn) ---------------- */
+		.set   xRn_EDE,  DMEM_220+PMEM_EDE_LENGTH
+		.set   xRn_TONY, DMEM_208
+
+		  mov            #0x1234, r5
+		  mov   #data_xRn_0x8347, r4
+		  add             16(r4), r5         ;# Write 0x8347+0x1234=0x957b to R5
+
+		  mov   #data_xRn_0x000a, r4
+		  mov            #0x1234, r6
+		  add              8(r4), r0
+		  nop
+		  nop
+		  nop
+		  nop
+		  mov            #0x0000, r6         ;# Make sure the jump is taken
+test_xRn_PC:
+
+		  mov            #0x1535, &DMEM_214
+		  mov   #data_xRn_0x4241, r7
+		  mov          #DMEM_202, r8
+		  add             16(r7), 18(r8)     ;# Write 0x4241+0x1535=0x5776 to memory @0x214
+
+		  mov            #0x2143, &DMEM_220
+		  mov   #data_xRn_0x7238, r7
+		  add              4(r7), xRn_EDE    ;# Write 0x7238+0x2143=0x937b to memory @0x220
+
+		  mov            #0x1432, &DMEM_208
+		  mov   #data_xRn_0x98b2, r4
+		  add             22(r4), &xRn_TONY  ;# Write 0x0x98b2+0x1432=0xace4 to memory @0x208
+		  mov            #0x3000, r15
+
+
+				/* ---------------------- TEST WHEN SOURCE IS 'EDE' ---------------- */
+		.set   EDE_EDE,  DMEM_216+PMEM_EDE_LENGTH
+		.set   EDE_TONY, DMEM_212
+
+
+		  mov              #0x4321, r4
+		  add      data_EDE_0xc3d6, r4          ;# Write 0xc3d6+0x4321=0x06f7 to R4
+
+		  mov              #0x3456, r6
+		  add      data_EDE_0x000a, r0
+		  nop
+		  nop
+		  nop
+		  nop
+		  mov              #0x0000, r6          ;# Make sure the jump is taken
+test_EDE_PC:
+
+		  mov            #DMEM_202, r8
+		  mov              #0x1234, &DMEM_214
+		  mov              #0x0000, &DMEM_208
+		  add      data_EDE_0xf712, 18(r8)      ;# Write 0xf712+0x1234=0x0946 to memory @0x214
+
+		  mov              #0x058a, &DMEM_216
+		  mov              #0x1234, &DMEM_208
+		  add      data_EDE_0xb3a9, EDE_EDE     ;# Write 0xb3a9+0x058a=0xb933 to memory @0x216
+
+		  mov              #0xA738, &DMEM_212
+		  mov              #0x1234, &DMEM_20A
+		  add      data_EDE_0x837a, &EDE_TONY   ;# Write 0x837A+0xA738=0x2ab2 to memory @0x212
+
+		  mov              #0x4000, r15
+
+
+
+				/* ---------------------- TEST WHEN SOURCE IS '&EDE' --------------- */
+		.set   aEDE_EDE,  DMEM_218+PMEM_EDE_LENGTH
+		.set   aEDE_TONY, DMEM_202
+
+		  mov                #0x4321, r4
+		  add      &data_aEDE_0x23d4, r4          ;# Write 0x23d4+0x4321=0x66f5 to R4
+
+		  mov                #0x3456, r6
+		  add      &data_aEDE_0x000a, r0
+		  nop
+		  nop
+		  nop
+		  nop
+		  mov                #0x0000, r6          ;# Make sure the jump is taken
+test_aEDE_PC:
+
+		  mov              #DMEM_202, r7
+		  mov                #0x3ab5, &DMEM_214
+		  mov                #0x1234, &DMEM_206
+		  add      &data_aEDE_0x481c, 18(r7)      ;# Write 0x481c+0x3ab5=0x82d1 to memory @0x214
+
+		  mov                #0x6e2f, &DMEM_218
+		  mov                #0x1234, &DMEM_208
+		  add      &data_aEDE_0x5c1f, aEDE_EDE    ;# Write 0x5c1f+0x6e2f=0xca4e to memory @0x218
+
+		  mov                #0x51ca, &DMEM_202
+		  mov                #0x1234, &DMEM_20A
+		  add      &data_aEDE_0xc16e, &aEDE_TONY  ;# Write 0xc16e+0x51ca=0x1338 to memory @0x202
+
+		  mov                #0x5000, r15
+
+		/* push rom */
+
+	/* -------------- TEST INSTRUCTION IN WORD MODE ------------------- */
+
+
+
+		  mov     #0x0020, r4        ;# Initialize RAM
+		  mov   #DMEM_230, r5
+		clear_mem_loop:
+		  clr    0(r5)
+		  incd     r5
+		  dec      r4
+		  jnz     clear_mem_loop 
+
+
+		  mov   #DMEM_252, r1        ;# Initialize stack pointer
+
+
+		  mov     #0x1000, r15
+
+
+				
+		  mov     #data_aRn_0x1234, r4
+		  push                     @r4           ;# PUSH (0x1234  =>  @=0x0250)
+
+		  mov     #data_aRn_0x5678, r6
+		  push                     @r6           ;# PUSH (0x5678  =>  @=0x024E)
+
+		  mov              #0x2000, r15
+
+
+			
+
+		  mov     #data_aRni_0x9abc, r4
+		  push                      @r4+         ;# PUSH (0x9abc  =>  @=0x024C)
+		  push                      @r4+         ;# PUSH (0xdef0  =>  @=0x024A)
+
+		  mov     #0x3000, r15
+
+
+		
+
+		  mov     #data_xRn_0x0fed, r4
+		  push                   26(r4)          ;# PUSH (0x0fed  =>  @=0x0248)
+		  push                   28(r4)          ;# PUSH (0xcba9  =>  @=0x0246)
+
+		  mov     #0x4000, r15
+
+
+			
+		.set   EDE_21E,  DMEM_21E
+		.set   EDE_220,  DMEM_220
+
+		  push    data_EDE_0x8765                ;# PUSH (0x8765  =>  @=0x0244)
+		  push    data_EDE_0x4321                ;# PUSH (0x4321  =>  @=0x0242)
+
+		  mov     #0x5000, r15
+
+
+		
+		.set   aEDE_222,  DMEM_222
+		.set   aEDE_224,  DMEM_224
+
+		  push  &data_aEDE_0x1f2e                ;# PUSH (0x1f2e  =>  @=0x0240)
+		  push  &data_aEDE_0x3d4c                ;# PUSH (0x3d4c  =>  @=0x023E)
+
+		  mov     #0x6000, r15
+
+	
+	/*----------------------------END ROM ---------------------------*/
+	
+	/*---------------------------- CALL TEST ------------------------*/
+
+	        # Initialization
+	#------------------------
+
+	mov   #DMEM_252, r1        ;# Initialize stack pointer
+	mov     #0x0000, r5        ;# Initialize R5
+
+
+	mov     #0x1000, r15
+
+
+        # Addressing mode: @Rn
+	#------------------------
+
+	mov    #data_aRn_call, r4
+	mov           #0x0000, r5
+	call                  @r4           ;# CALL TEST_ROUTINE_aRN
+
+	mov     #0x2000, r15
+
+
+        # Addressing mode: @Rn+
+	#------------------------
+
+	mov    #data_aRni_call, r4
+	mov            #0x0000, r5
+	call                   @r4+         ;# CALL TEST_ROUTINE_aRNi
+
+	mov     #0x3000, r15
+
+
+        # Addressing mode: X(Rn)
+	#------------------------
+
+	mov    #data_xRn_call, r4
+	mov           #0x0000, r5
+	call                26(r4)          ;# CALL TEST_ROUTINE_xRN
+
+	mov     #0x4000, r15
+
+
+        # Addressing mode: EDE
+	#------------------------
+.set   EDE_21E,  DMEM_21E
+
+	mov     #0x0000, r5
+	call    data_EDE_call               ;# CALL TEST_ROUTINE_EDE
+
+	mov     #0x5000, r15
+
+
+        # Addressing mode: &EDE
+	#------------------------
+.set   aEDE_220,  DMEM_220
+
+	mov     #0x0000, r5
+	call  &data_aEDE_call               ;# CALL TEST_ROUTINE_aEDE
+
+	mov     #0x6000, r15
+
+
+
+
+	/*------------------------ [ ALU PATTERN ]------------------------*/
+  MOV #DMEM_250, r1
+
+
+  mov #23418, r4
+  mov #-12197, r6
+  call #EXEC1
+	
+		/*-------------------- Byte ALU operations -----------------*/
+		mov.b r4, r5
+		addc.b r6, r5
+		mov.b r4, r5
+		sub.b r6, r5
+		mov.b r4, r5
+		subc.b r6, r5
+		mov.b r4, r5
+		cmp.b r6, r5
+		mov.b r4, r5
+		dadd.b r6, r5
+		mov.b r4, r5
+		bit.b r6, r5
+		mov.b r4, r5
+		bic.b r6, r5
+		mov.b r4, r5
+		bis.b r6, r5
+		mov.b r4, r5
+		xor.b r6, r5
+		mov.b r4, r5
+		and.b r6, r5
+		mov.b r4, r5
+		rrc.b r5
+		mov.b r4, r5
+		rra.b r5
+		mov.b r4, r5
+		push.b r5
+		pop.b r5
+		push.b r6
+		pop.b r6
+		/*--------------------------------------*/
+  
+  mov #1024, r4
+  mov #-4097, r6
+  call #EXEC1
+	
+  
+  mov #-338, r4
+  mov #-17248, r6
+  call #EXEC1
+	
+  
+  mov #3840, r4
+  mov #3328, r6
+  
+  call #EXEC1
+	
+  
+  mov #28673, r4
+  mov #27649, r6
+  
+  call #EXEC1
+	
+  
+  mov #-28635, r4
+  mov #-28649, r6
+  
+  call #EXEC1
+	
+  
+  mov #-31841, r4
+  mov #905, r6
+  
+  call #EXEC1
+	
+  
+  mov #-27128, r4
+  mov #22996, r6
+  
+  call #EXEC1
+	
+  
+  mov #-14849, r4
+  mov #8217, r6
+  
+  call #EXEC1
+	
+  
+  mov #-8210, r4
+  mov #0, r6
+  
+  call #EXEC1
+	
+  
+  mov #4366, r4
+  mov #-5118, r6
+  
+  call #EXEC1
+	
+  
+  mov #11072, r4
+  mov #25042, r6
+  
+  call #EXEC1
+	
+  
+  mov #27136, r4
+  mov #10891, r6
+  
+  call #EXEC1
+	
+  
+  mov #-22545, r4
+  mov #18619, r6
+  
+  call #EXEC1
+	
+  
+  mov #7200, r4
+  mov #26821, r6
+  
+  call #EXEC1
+	
+  
+  mov #4096, r4
+  mov #4096, r6
+  
+  call #EXEC1
+	
+  
+  mov #27904, r4
+  mov #8320, r6
+  
+  call #EXEC1
+	
+  
+  mov #20843, r4
+  mov #-24086, r6
+  
+  call #EXEC1
+	
+  
+  mov #-1, r4
+  mov #28153, r6
+  
+  call #EXEC1
+	
+  
+  mov #21564, r4
+  mov #-27201, r6
+  
+  call #EXEC1
+	
+  
+  mov #-896, r4
+  mov #1152, r6
+  
+  call #EXEC1
+	
+  
+  mov #-10976, r4
+  mov #759, r6
+  
+  call #EXEC1
+	
+  
+  mov #-16864, r4
+  mov #289, r6
+  
+  call #EXEC1
+	
+  
+  mov #24950, r4
+  mov #2056, r6
+  
+  call #EXEC1
+	
+  
+  mov #21762, r4
+  mov #-23844, r6
+  
+  call #EXEC1
+	
+  
+  mov #18399, r4
+  mov #16448, r6
+  
+  call #EXEC1
+	
+  
+  mov #3591, r4
+  mov #28407, r6
+  
+  call #EXEC1
+	
+  
+  mov #-7295, r4
+  mov #-32767, r6
+  
+  call #EXEC1
+	
+  
+  mov #-4084, r4
+  mov #4082, r6
+  
+  call #EXEC1
+	
+  
+  mov #155, r4
+  mov #-19714, r6
+  
+  call #EXEC1
+	
+  
+  mov #18495, r4
+  mov #22911, r6
+  
+  call #EXEC1
+	
+  
+  mov #25724, r4
+  mov #27839, r6
+  
+  call #EXEC1
+	
+  
+  mov #-17673, r4
+  mov #-23306, r6
+  
+  call #EXEC1
+	
+  
+  mov #5212, r4
+  mov #-15869, r6
+  
+  call #EXEC1
+	
+  
+  mov #-1, r4
+  mov #-7661, r6
+  
+  call #EXEC1
+	
+  
+  mov #801, r4
+  mov #14425, r6
+  
+  call #EXEC1
+	
+  
+  mov #8215, r4
+  mov #10399, r6
+  call #EXEC1
+	
+  
+  mov #15360, r4
+  mov #-32258, r6
+  call #EXEC1
+	
+  
+  mov #1019, r4
+  mov #8355, r6
+  call #EXEC1
+	
+  
+  mov #12612, r4
+  mov #14484, r6
+  call #EXEC1
+	
+  
+  mov #10496, r4
+  mov #-5046, r6
+  call #EXEC1
+	
+  
+  mov #17417, r4
+  mov #7724, r6
+  call #EXEC1
+	
+  
+  mov #-2050, r4
+  mov #2049, r6
+  call #EXEC1
+	
+  
+  mov #-7519, r4
+  mov #-28668, r6
+  call #EXEC1
+	
+  
+  mov #30976, r4
+  mov #15360, r6
+  call #EXEC1
+	
+  
+  mov #1552, r4
+  mov #4240, r6
+  call #EXEC1
+	
+  
+  mov #768, r4
+  mov #16384, r6
+  call #EXEC1
+	
+  
+  mov #4112, r4
+  mov #16, r6
+  call #EXEC1
+	
+  
+  mov #-32760, r4
+  mov #8, r6
+  call #EXEC1
+	
+  
+  mov #21045, r4
+  mov #12885, r6
+  call #EXEC1
+	
+  
+  mov #-5665, r4
+  mov #14567, r6
+  call #EXEC1
+	
+  
+  mov #29807, r4
+  mov #23795, r6
+  call #EXEC1
+	
+  
+  mov #14967, r4
+  mov #12281, r6
+  call #EXEC1
+	
+  
+  mov #6347, r4
+  mov #-6604, r6
+  call #EXEC1
+	
+  
+  mov #18857, r4
+  mov #7571, r6
+  call #EXEC1
+	
+  
+  mov #-24884, r4
+  mov #11007, r6
+  call #EXEC1
+	
+  
+  mov #20390, r4
+  mov #5567, r6
+  call #EXEC1
+	
+  
+  mov #23883, r4
+  mov #-20887, r6
+  call #EXEC1
+	
+  
+  mov #11941, r4
+  mov #-10444, r6
+  call #EXEC1
+	
+  
+  mov #-21377, r4
+  mov #20332, r6
+  call #EXEC1
+	
+  
+  mov #-10545, r4
+  mov #10166, r6
+  call #EXEC1
+	
+  
+  mov #-5279, r4
+  mov #-27685, r6
+  call #EXEC1
+	
+  
+  mov #30128, r4
+  mov #18925, r6
+  call #EXEC1
+	
+  
+  mov #5708, r4
+  mov #23314, r6
+  call #EXEC1
+	
+  
+  mov #32767, r4
+  mov #11657, r6
+  call #EXEC1
+	
+  
+  mov #29215, r4
+  mov #27670, r6
+  call #EXEC1
+	
+  
+  mov #-24797, r4
+  mov #32249, r6
+  call #EXEC1
+	
+  
+  mov #22941, r4
+  mov #-23186, r6
+  call #EXEC1
+	
+  
+  mov #27807, r4
+  mov #-11529, r6
+  call #EXEC1
+	
+  
+  mov #-24536, r4
+  mov #12905, r6
+  call #EXEC1
+
+/*-----------------------  END ALU PATTERN -----------------------*/
+
+		
+	
+	/*------------------------ MULTIPLIER PATTERN --------------------*/
+
+	MOV   #DMEM_250, R1       ; # INITIALIZE STACK POINTER
+		
+
+
+  mov #64893, r4
+  mov #19299, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #575, r4
+  mov #19299, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #40190, r4
+  mov #20099, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #30968, r4
+  mov #19992, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #62026, r4
+  mov #6499, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #17594, r4
+  mov #9699, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #16201, r4
+  mov #16099, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #32756, r4
+  mov #22499, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #48868, r4
+  mov #6499, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #41471, r4
+  mov #13199, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #20479, r4
+  mov #13499, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #41008, r4
+  mov #4999, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #33571, r4
+  mov #9599, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #60932, r4
+  mov #13699, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #61168, r4
+  mov #6599, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #41716, r4
+  mov #20899, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #38082, r4
+  mov #13299, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #44207, r4
+  mov #14099, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #65527, r4
+  mov #20900, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #42573, r4
+  mov #17600, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #17416, r4
+  mov #2000, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #22584, r4
+  mov #6400, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #45668, r4
+  mov #8200, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #49151, r4
+  mov #21200, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #47488, r4
+  mov #15300, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #55416, r4
+  mov #6400, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #47224, r4
+  mov #6400, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #52976, r4
+  mov #6400, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #26364, r4
+  mov #6400, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #17144, r4
+  mov #22400, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #27807, r4
+  mov #9600, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #16383, r4
+  mov #13400, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #14071, r4
+  mov #15200, r6
+  
+  call #EXEC_MUL
+	
+  
+  mov #63171, r4
+  mov #19200, r6
+  
+  call #EXEC_MUL
+		
+   /* --------------    16-BIT RD/WR ACCESS OPERANDS   --------------- */
+
+	mov #0x1234,   &MPY
+	mov #0x5678,   &OP2
+	
+	mov    &MPY,   r10
+	mov   &MPYS,   r11
+	mov    &MAC,   r12
+	mov   &MACS,   r13
+	mov    &OP2,   r14
+
+
+	mov #0x4321,   &MPYS
+	mov #0x8765,   &OP2
+	
+	mov    &MPY,   r10
+	mov   &MPYS,   r11
+	mov    &MAC,   r12
+	mov   &MACS,   r13
+	mov    &OP2,   r14
+	
+
+	mov #0x9ABC,   &MAC
+	mov #0xDEF0,   &OP2
+	
+	mov    &MPY,   r10
+	mov   &MPYS,   r11
+	mov    &MAC,   r12
+	mov   &MACS,   r13
+	mov    &OP2,   r14
+	
+
+	mov #0xCBA9,   &MACS
+	mov #0x0FED,   &OP2
+	
+	mov    &MPY,   r10
+	mov   &MPYS,   r11
+	mov    &MAC,   r12
+	mov   &MACS,   r13
+	mov    &OP2,   r14
+
+	 /* --------------    8-BIT RD/WR ACCESS OPERANDS   --------------- */
+
+	mov   #0x1234,  &MPY
+	mov   &MPY,     r10
+	mov.b #0xab,    &MPY
+	mov   &MPY,     r11
+
+	mov   #0x5678,  &MPYS
+	mov   &MPYS,    r10
+	mov.b #0xbc,    &MPYS
+	mov   &MPYS,    r11
+	
+
+	mov   #0x9abc,  &MAC
+	mov   &MAC,     r10
+	mov.b #0xde,    &MAC
+	mov   &MAC,     r11
+	
+	mov   #0xdef0,  &MACS
+	mov   &MACS,    r10
+	mov.b #0xed,    &MACS
+	mov   &MACS,    r11
+	
+
+	mov   #0x4321,  &OP2
+	mov   &OP2,     r10
+	mov.b #0xdc,    &OP2
+	mov   &OP2,     r11
+	
+
+	mov   #0x8765,  &RESLO
+	mov   &RESLO,   r10
+	mov.b #0xcb,    &RESLO
+	mov   &RESLO,   r11
+	
+
+	mov   #0xcba9,  &RESHI
+	mov   &RESHI,   r10
+	mov.b #0xba,    &RESHI
+	mov   &RESHI,   r11
+	nop
+	/*---------------------------------------------------------------*/
+	
+	/*---------------------------- CALL pt.2-----------------------*/
+	
+    # Initialization
+	#------------------------
+
+	mov   #DMEM_252, r1        ;# Initialize stack pointer
+	mov     #0x0000, r5        ;# Initialize R5
+
+
+	mov     #0x1000, r15
+
+
+        # Addressing mode: @Rn
+	#------------------------
+
+	mov    #data_aRn_call, r4
+	mov           #0x0000, r5
+	call                  @r4           ;# CALL TEST_ROUTINE_aRN
+
+	mov     #0x2000, r15
+
+
+        # Addressing mode: @Rn+
+	#------------------------
+
+	mov    #data_aRni_call, r4
+	mov            #0x0000, r5
+	call                   @r4+         ;# CALL TEST_ROUTINE_aRNi
+
+	mov     #0x3000, r15
+
+
+        # Addressing mode: X(Rn)
+	#------------------------
+
+	mov    #data_xRn_call, r4
+	mov           #0x0000, r5
+	call                26(r4)          ;# CALL TEST_ROUTINE_xRN
+
+	mov     #0x4000, r15
+
+
+        # Addressing mode: EDE
+	#------------------------
+.set   EDE_21E,  DMEM_21E
+
+	mov     #0x0000, r5
+	call    data_EDE_call               ;# CALL TEST_ROUTINE_EDE
+
+	mov     #0x5000, r15
+
+
+        # Addressing mode: &EDE
+	#------------------------
+.set   aEDE_220,  DMEM_220
+
+	mov     #0x0000, r5
+	call  &data_aEDE_call               ;# CALL TEST_ROUTINE_aEDE
+
+	mov     #0x6000, r15
+	
+	
+	
+        /* ----------------------         END OF TEST        --------------- */
+end_of_test:
+	nop
+	br #0xffff
+
+	/*--------------------------      Routine --------------------------*/
+EXEC1:
+	MOV 	  r4,r10
+	MOV	  r6,r11
+	
+  	
+ 	ADD       r6,r10
+	MOV 	  r4,r10
+ 	ADDC      r6,r10
+	MOV 	  r4,r10
+ 	SUB       r6,r10
+	MOV 	  r4,r10  
+ 	SUBC      r6,r10
+	MOV 	  r4,r10
+ 	CMP       r6,r10
+	MOV 	  r4,r10
+ 	DADD      r6,r10
+	MOV 	  r4,r10
+ 	BIT       r6,r10
+	MOV 	  r4,r10
+ 	BIC       r6,r10
+	MOV 	  r4,r10
+ 	BIS       r6,r10
+	MOV 	  r4,r10
+ 	XOR       r6,r10
+	MOV 	  r4,r10
+ 	AND       r6,r10
+
+	MOV 	  r6,r11
+	RRC 	  r6
+	MOV 	  r6,r11
+	RRA 	  r6
+	MOV 	  r6,r11
+	SWPB 	  r6
+	MOV 	  r6,r11
+	SXT  	  r6
+  	RET
+EXEC_MUL: 
+	
+        /* --------------   UNSIGNED MULTIPLICATION   --------------- */
+
+	mov r4, &MPY 	
+	mov r6, &OP2
+	mov &RESLO,  R10
+	mov &RESHI,  R11
+	mov &SUMEXT, R12
+		 
+	/* --------------    SIGNED MULTIPLICATION    --------------- */
+
+	
+
+	mov r4, &MPYS 	
+	mov r6, &OP2       
+	mov &RESLO,  R10
+	mov &RESHI,  R11
+	mov &SUMEXT, R12
+	
+	
+	 /* --------------   UNSIGNED MULTIPLY-ACCUMULATE   --------------- */
+
+	mov r4, &MAC
+	mov &RESLO,  R10
+	mov &RESHI,  R11
+	mov &SUMEXT, R12
+	
+	
+	 /* --------------   SIGNED MULTIPLY-ACCUMULATE   --------------- */
+
+	
+	mov r4, &MACS 
+	mov &RESLO,  R10
+	mov &RESHI,  R11
+	mov &SUMEXT, R12
+	
+	
+	
+	RET
+  /* ----------------------         TEST FUNCTIONS     --------------- */
+
+
+        /* ----------------------         TEST FUNCTIONS     --------------- */
+
+TEST_ROUTINE_RN:
+        mov #0x1234, r5
+	ret
+
+TEST_ROUTINE_aRN:
+        mov #0x5678, r5
+	ret
+
+TEST_ROUTINE_aRNi:
+        mov #0x9abc, r5
+	ret
+
+TEST_ROUTINE_N:
+        mov #0xabcd, r5
+	ret
+
+TEST_ROUTINE_xRN:
+        mov #0xef01, r5
+	ret
+
+TEST_ROUTINE_EDE:
+        mov #0x2345, r5
+	ret
+
+TEST_ROUTINE_aEDE:
+        mov #0x6789, r5
+	ret
+	
+        /* ----------------------            DATA TABLE      --------------- */
+data_aRn_call:
+	.word TEST_ROUTINE_aRN
+
+data_aRni_call:
+	.word TEST_ROUTINE_aRNi
+
+data_xRn_call:
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word 0x0000
+	.word TEST_ROUTINE_xRN
+
+data_EDE_call:
+	.word TEST_ROUTINE_EDE
+
+data_aEDE_call:
+	.word TEST_ROUTINE_aEDE
+
+     /* ----------------------            DATA TABLE      --------------- */
+data_aRn_0x1111:
+  .word 0x1111
+data_aRn_0x000a:
+  .word 0x000a
+data_aRn_0x1234:
+  .word 0x1234
+data_aRn_0x5678:
+  .word 0x5678
+data_aRn_0x5f12:
+  .word 0x5f12
+data_aRn_0x3112:
+  .word 0x3112
+
+
+data_aRni_0x9abc:
+  .word 0x9abc
+  .word 0xdef0
+
+data_aRni_0x2222:
+  .word 0x2222
+  .word 0x3333
+data_aRni_0x000a:
+  .word 0x000a
+  .word 0x000e
+data_aRni_0x1234:
+  .word 0x1234
+  .word 0x2345
+data_aRni_0x5f12:
+  .word 0x5f12
+  .word 0x6345
+data_aRni_0x3112:
+  .word 0x3112
+  .word 0x1123
+
+data_xRn_0x8347:
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x8347
+data_xRn_0x000a:
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x000a
+data_xRn_0x4241:
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x4241
+data_xRn_0x7238:
+  .word 0x0000
+  .word 0x0000
+  .word 0x7238
+data_xRn_0x98b2:
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x98b2
+
+data_EDE_0xc3d6:
+  .word 0xc3d6
+data_EDE_0x000a:
+  .word 0x000a
+data_EDE_0xf712:
+  .word 0xf712
+data_EDE_0xb3a9:
+  .word 0xb3a9
+data_EDE_0x837a:
+  .word 0x837a
+
+data_aEDE_0x23d4:
+  .word 0x23d4
+data_aEDE_0x000a:
+  .word 0x000a
+data_aEDE_0x481c:
+  .word 0x481c
+data_aEDE_0x5c1f:
+  .word 0x5c1f
+data_aEDE_0xc16e:
+  .word 0xc16e
+  data_xRn_0x0fed:
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0000
+  .word 0x0fed
+  .word 0xcba9
+
+data_EDE_0x8765:
+  .word 0x8765
+data_EDE_0x4321:
+  .word 0x4321
+
+data_aEDE_0x1f2e:
+  .word 0x1f2e
+data_aEDE_0x3d4c:
+  .word 0x3d4c
+
+        /* ----------------------         INTERRUPT VECTORS  --------------- */
+
+.section .vectors, "a"
+.word end_of_test     ; Interrupt  0 (lowest priority)    <unused>
+.word end_of_test     ; Interrupt  1                      <unused>
+.word end_of_test     ; Interrupt  2                      <unused>
+.word end_of_test     ; Interrupt  3                      <unused>
+.word end_of_test     ; Interrupt  4                      <unused>
+.word end_of_test     ; Interrupt  5                      <unused>
+.word end_of_test     ; Interrupt  6                      <unused>
+.word end_of_test     ; Interrupt  7                      <unused>
+.word end_of_test     ; Interrupt  8                      <unused>
+.word end_of_test     ; Interrupt  9                      <unused>
+.word end_of_test     ; Interrupt 10                      Watchdog timer
+.word end_of_test     ; Interrupt 11                      <unused>
+.word end_of_test     ; Interrupt 12                      <unused>
+.word end_of_test     ; Interrupt 13                      <unused>
+.word end_of_test     ; Interrupt 14                      NMI
+.word main            ; Interrupt 15 (highest priority)   RESET
+
+

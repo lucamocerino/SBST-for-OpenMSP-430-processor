@@ -1,0 +1,198 @@
+STIL 1.0 { Design 2005; }
+Header {
+   Title "  TetraMAX (TM)  J-2014.09-SP2-i141125_193544 STIL output";
+   Date "Thu Jan 12 23:31:25 2017";
+   History {
+      Ann {*     Uncollapsed Stuck Fault Summary Report *}
+      Ann {* ----------------------------------------------- *}
+      Ann {* fault class                     code   #faults *}
+      Ann {* ------------------------------  ----  --------- *}
+      Ann {* Detected                         DT       2854 *}
+      Ann {* Possibly detected                PT          0 *}
+      Ann {* Undetectable                     UD          3 *}
+      Ann {* ATPG untestable                  AU          0 *}
+      Ann {* Not detected                     ND          1 *}
+      Ann {* ----------------------------------------------- *}
+      Ann {* total faults                              2858 *}
+      Ann {* test coverage                            99.96% *}
+      Ann {* ----------------------------------------------- *}
+      Ann {*  *}
+      Ann {*            Pattern Summary Report *}
+      Ann {* ----------------------------------------------- *}
+      Ann {* #internal patterns                          34 *}
+      Ann {*     #basic_scan patterns                    34 *}
+      Ann {* ----------------------------------------------- *}
+      Ann {*  *}
+      Ann {* rule  severity  #fails  description *}
+      Ann {* ----  --------  ------  --------------------------------- *}
+      Ann {* B7    warning        5  undriven module output pin *}
+      Ann {* B8    warning       20  unconnected module input pin *}
+      Ann {* B10   warning        2  unconnected module internal net *}
+      Ann {*  *}
+      Ann {* There are no clocks *}
+      Ann {* There are no constraint ports *}
+      Ann {* There are no equivalent pins *}
+      Ann {* There are no net connections *}
+      Ann {* Unified STIL Flow *}
+      Ann {* min_n_shifts = 1 *}
+      Ann {* serial_flag = 0 *}
+   }
+}
+Signals {
+   "A[16]" In; "A[15]" In; "A[14]" In; "A[13]" In; "A[12]" In; "A[11]" In; "A[10]" In;
+   "A[9]" In; "A[8]" In; "A[7]" In; "A[6]" In; "A[5]" In; "A[4]" In; "A[3]" In; "A[2]" In;
+   "A[1]" In; "A[0]" In; "B[8]" In; "B[7]" In; "B[6]" In; "B[5]" In; "B[4]" In; "B[3]" In;
+   "B[2]" In; "B[1]" In; "B[0]" In; "TC" In; "PRODUCT[25]" Out; "PRODUCT[24]" Out;
+   "PRODUCT[23]" Out; "PRODUCT[22]" Out; "PRODUCT[21]" Out; "PRODUCT[20]" Out; "PRODUCT[19]" Out;
+   "PRODUCT[18]" Out; "PRODUCT[17]" Out; "PRODUCT[16]" Out; "PRODUCT[15]" Out; "PRODUCT[14]" Out;
+   "PRODUCT[13]" Out; "PRODUCT[12]" Out; "PRODUCT[11]" Out; "PRODUCT[10]" Out; "PRODUCT[9]" Out;
+   "PRODUCT[8]" Out; "PRODUCT[7]" Out; "PRODUCT[6]" Out; "PRODUCT[5]" Out; "PRODUCT[4]" Out;
+   "PRODUCT[3]" Out; "PRODUCT[2]" Out; "PRODUCT[1]" Out; "PRODUCT[0]" Out;
+}
+SignalGroups {
+   "_default_In_Timing_" = '"A[16]" + "A[15]" + "A[14]" + "A[13]" + "A[12]" +
+   "A[11]" + "A[10]" + "A[9]" + "A[8]" + "A[7]" + "A[6]" + "A[5]" + "A[4]" +
+   "A[3]" + "A[2]" + "A[1]" + "A[0]" + "B[8]" + "B[7]" + "B[6]" + "B[5]" +
+   "B[4]" + "B[3]" + "B[2]" + "B[1]" + "B[0]" + "TC"'; // #signals=27
+   "_pi" = '"A[16]" + "A[15]" + "A[14]" + "A[13]" + "A[12]" + "A[11]" + "A[10]" +
+   "A[9]" + "A[8]" + "A[7]" + "A[6]" + "A[5]" + "A[4]" + "A[3]" + "A[2]" +
+   "A[1]" + "A[0]" + "B[8]" + "B[7]" + "B[6]" + "B[5]" + "B[4]" + "B[3]" +
+   "B[2]" + "B[1]" + "B[0]" + "TC"'; // #signals=27
+   "_in" = '"A[16]" + "A[15]" + "A[14]" + "A[13]" + "A[12]" + "A[11]" + "A[10]" +
+   "A[9]" + "A[8]" + "A[7]" + "A[6]" + "A[5]" + "A[4]" + "A[3]" + "A[2]" +
+   "A[1]" + "A[0]" + "B[8]" + "B[7]" + "B[6]" + "B[5]" + "B[4]" + "B[3]" +
+   "B[2]" + "B[1]" + "B[0]" + "TC"'; // #signals=27
+   "_default_Out_Timing_" = '"PRODUCT[25]" + "PRODUCT[24]" + "PRODUCT[23]" +
+   "PRODUCT[22]" + "PRODUCT[21]" + "PRODUCT[20]" + "PRODUCT[19]" + "PRODUCT[18]" +
+   "PRODUCT[17]" + "PRODUCT[16]" + "PRODUCT[15]" + "PRODUCT[14]" + "PRODUCT[13]" +
+   "PRODUCT[12]" + "PRODUCT[11]" + "PRODUCT[10]" + "PRODUCT[9]" + "PRODUCT[8]" +
+   "PRODUCT[7]" + "PRODUCT[6]" + "PRODUCT[5]" + "PRODUCT[4]" + "PRODUCT[3]" +
+   "PRODUCT[2]" + "PRODUCT[1]" + "PRODUCT[0]"'; // #signals=26
+   "_po" = '"PRODUCT[25]" + "PRODUCT[24]" + "PRODUCT[23]" + "PRODUCT[22]" +
+   "PRODUCT[21]" + "PRODUCT[20]" + "PRODUCT[19]" + "PRODUCT[18]" + "PRODUCT[17]" +
+   "PRODUCT[16]" + "PRODUCT[15]" + "PRODUCT[14]" + "PRODUCT[13]" + "PRODUCT[12]" +
+   "PRODUCT[11]" + "PRODUCT[10]" + "PRODUCT[9]" + "PRODUCT[8]" + "PRODUCT[7]" +
+   "PRODUCT[6]" + "PRODUCT[5]" + "PRODUCT[4]" + "PRODUCT[3]" + "PRODUCT[2]" +
+   "PRODUCT[1]" + "PRODUCT[0]"'; // #signals=26
+   "_out" = '"PRODUCT[25]" + "PRODUCT[24]" + "PRODUCT[23]" + "PRODUCT[22]" +
+   "PRODUCT[21]" + "PRODUCT[20]" + "PRODUCT[19]" + "PRODUCT[18]" + "PRODUCT[17]" +
+   "PRODUCT[16]" + "PRODUCT[15]" + "PRODUCT[14]" + "PRODUCT[13]" + "PRODUCT[12]" +
+   "PRODUCT[11]" + "PRODUCT[10]" + "PRODUCT[9]" + "PRODUCT[8]" + "PRODUCT[7]" +
+   "PRODUCT[6]" + "PRODUCT[5]" + "PRODUCT[4]" + "PRODUCT[3]" + "PRODUCT[2]" +
+   "PRODUCT[1]" + "PRODUCT[0]"'; // #signals=26
+}
+Timing {
+   WaveformTable "_default_WFT_" {
+      Period '100ns';
+      Waveforms {
+         "_default_In_Timing_" { 0 { '0ns' D; } }
+         "_default_In_Timing_" { 1 { '0ns' U; } }
+         "_default_In_Timing_" { Z { '0ns' Z; } }
+         "_default_In_Timing_" { N { '0ns' N; } }
+         "_default_Out_Timing_" { X { '0ns' X; } }
+         "_default_Out_Timing_" { H { '0ns' X; '40ns' H; } }
+         "_default_Out_Timing_" { T { '0ns' X; '40ns' T; } }
+         "_default_Out_Timing_" { L { '0ns' X; '40ns' L; } }
+      }
+   }
+}
+ScanStructures {
+   // Uncomment and modify the following to suit your design
+   // ScanChain "chain_name" { ScanIn "chain_input_name"; ScanOut "chain_output_name"; }
+}
+PatternBurst "_burst_" {
+   PatList { "_pattern_" {
+   }
+}}
+PatternExec {
+   PatternBurst "_burst_";
+}
+Procedures {
+   "capture" {
+      W "_default_WFT_";
+      C { "_po"=\r26 X ; }
+      "forcePI": V { "_pi"=\r27 # ; }
+      "measurePO": V { "_po"=\r26 # ; }
+   }
+   // Uncomment and modify the following to suit your design
+   // load_unload {
+      // V { } // force clocks off and scan enable pins active
+      // Shift { V { _si=#; _so=#; }} // pulse shift clocks
+   // }
+}
+MacroDefs {
+}
+Pattern "_pattern_" {
+   W "_default_WFT_";
+   "precondition all Signals": C { "_pi"=\r27 0 ; "_po"=\r26 X ; }
+   "pattern 0": Call "capture" { 
+      "_pi"=111111010111110111000000001; "_po"=TTLLLLLHLHLLLLLHLHLLLLLLLL; }
+   "pattern 1": Call "capture" { 
+      "_pi"=000000100011111111000000111; "_po"=TTHHHHHLHHHLLLHHHLLHHHHHLH; }
+   "pattern 2": Call "capture" { 
+      "_pi"=100111001111111011001000110; "_po"=TTHLHLHLHLHHHHLLLLHLLHLHHH; }
+   "pattern 3": Call "capture" { 
+      "_pi"=011110001111100011000000011; "_po"=TTLLLLHHHHLLLLLLLLHHHHLLLH; }
+   "pattern 4": Call "capture" { 
+      "_pi"=111100100100101001000000001; "_po"=TTLLLHHLHHLHHLHHLLLLLLLLLL; }
+   "pattern 5": Call "capture" { 
+      "_pi"=010001001011101001100000011; "_po"=TTHLHHHLHHHHLLHHHHLHHHLHLL; }
+   "pattern 6": Call "capture" { 
+      "_pi"=001111110100100110100000011; "_po"=TTLLHHHHHHHHLLHLLLLLLHLLHH; }
+   "pattern 7": Call "capture" { 
+      "_pi"=011111111111010011100000001; "_po"=TTHLLLLLLLLLLLHLHHHLLLLLLL; }
+   "pattern 8": Call "capture" { 
+      "_pi"=101111101110010001000000100; "_po"=TTHLLLLLLHLLHHLLHHHLLHLLLL; }
+   "pattern 9": Call "capture" { 
+      "_pi"=101000011111111110000011001; "_po"=TTHHHHLHHHLLHLHHHHHHHHLHLL; }
+   "pattern 10": Call "capture" { 
+      "_pi"=010011111111111110000110001; "_po"=TTLLLLHHHLHHHHHHHHHHHLHLLL; }
+   "pattern 11": Call "capture" { 
+      "_pi"=101000000011000000000100001; "_po"=TTHHHHLHLLLLLLLHHLLLLLLLLL; }
+   "pattern 12": Call "capture" { 
+      "_pi"=100000110010001101011111110; "_po"=TTLHHHHHLHHHLHLHHLHLHHHLHL; }
+   "pattern 13": Call "capture" { 
+      "_pi"=111011100000010010001000001; "_po"=TTHHHHHLHHHLLLLLLHLLHLLLLL; }
+   "pattern 14": Call "capture" { 
+      "_pi"=111011101111000001000001001; "_po"=TTLLHLLLLHHLLHLHHHHLLLLLLL; }
+   "pattern 15": Call "capture" { 
+      "_pi"=101000101111010011010000000; "_po"=TTHLLLHLHHHLLHLLLHLHLLLLLL; }
+   "pattern 16": Call "capture" { 
+      "_pi"=100101001100001010000100000; "_po"=TTHHHHLLHLHLLHHLLLLHLHLLLL; }
+   "pattern 17": Call "capture" { 
+      "_pi"=101011001010111110001100000; "_po"=TTHHHLLLLLHHLLLLLHHHLHLLLL; }
+   "pattern 18": Call "capture" { 
+      "_pi"=111111111111011111010001101; "_po"=TTLLLLLLLLLLLLHHLLLHLHHLHL; }
+   "pattern 19": Call "capture" { 
+      "_pi"=101001100100110110110000000; "_po"=TTLHHHHLLHLHHHLHLLLHLLLLLL; }
+   "pattern 20": Call "capture" { 
+      "_pi"=010001000000100000000010001; "_po"=TTLLLLLHLLLHLLLLLLHLLLLLLL; }
+   "pattern 21": Call "capture" { 
+      "_pi"=010110000011100001000000011; "_po"=TTLHLHLLLLLHLLLLLLLHHHLLLL; }
+   "pattern 22": Call "capture" { 
+      "_pi"=101100100110010001010010011; "_po"=TTLHHLHHHLHHHHLHLHLLLLHLLL; }
+   "pattern 23": Call "capture" { 
+      "_pi"=101111111111111111010100000; "_po"=TTLHLHHLLLLLLLLLLLHLHHLLLL; }
+   "pattern 24": Call "capture" { 
+      "_pi"=101110011000000010011001010; "_po"=TTHHLLHLLLLHLHHHHHLHHLLHLH; }
+   "pattern 25": Call "capture" { 
+      "_pi"=110110000111100001000000010; "_po"=TTLHLLHHHLHHLLLLLLHHHHLLLL; }
+   "pattern 26": Call "capture" { 
+      "_pi"=101110000111100001000000010; "_po"=TTHLLLHHHLHLLLLLLLHHHHLLLL; }
+   "pattern 27": Call "capture" { 
+      "_pi"=110011101111000001000000001; "_po"=TTLHHLLLHLLLHLLLLLLLLLLLLL; }
+   "pattern 28": Call "capture" { 
+      "_pi"=011001101111110001000000000; "_po"=TTLLHHLLHLLLLLHLLLLLLLLLLL; }
+   "pattern 29": Call "capture" { 
+      "_pi"=010000101111100011100000000; "_po"=TTHLHHHHLHLLLLLHHHHLLLLLLL; }
+   "pattern 30": Call "capture" { 
+      "_pi"=011011001001111101100000001; "_po"=TTHLLHLLHHLHHLLLLHLLLLLLLL; }
+   "pattern 31": Call "capture" { 
+      "_pi"=001111111111111110000110000; "_po"=TTLLLLHLHHHHHHHHHHHHHLHLLL; }
+   "pattern 32": Call "capture" { 
+      "_pi"=001101101111011110011000000; "_po"=TTLLHLHLLHLLHHHLLHHLHLLLLL; }
+   "pattern 33": Call "capture" { 
+      "_pi"=111101101100001111000000100; "_po"=TTLLLHLLHLLHLHLHLLLLLLHHHL; }
+}
+
+// Patterns reference 68 V statements, generating 68 test cycles
