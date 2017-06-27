@@ -5,4 +5,6 @@ A functional test program for manufacturing test of an OpenMSP 430 processor con
 # Contents:
 
 1. Source assembly file (.asm)
-2. Script for ext
+2. Scripts (.sh, .tcl) in order to extract test patterns usign EMAX ATPG for the combinational part of the CPU (ALU,Multiplier)
+3. Test pattern (.stil)
+4. Report that describe all workflow (.pdf)
